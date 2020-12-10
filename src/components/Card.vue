@@ -1,5 +1,5 @@
 <template>
-  <v-card hover :width="70" @click="emitCardClicked">
+  <v-card hover :width="70" :height="90" @click="emitCardClicked">
     <div v-if="cardInfo.isShow">
       {{ cardInfo.groupId }}
     </div>
