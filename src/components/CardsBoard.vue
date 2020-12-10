@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <v-row v-for="(row, rowIndex) in cardsMatrix" :key="rowIndex">
-      <v-col v-for="(col, colIndex) in row" :key="colIndex">
-        <Card :id="col.id" :shouldReveal="col.shouldReveal" />
+    <v-row>
+      <v-col v-for="(card, index) in cards" :key="index">
+        <Card :cardInfo="card" @cardClicked="handleCardClicked" />
       </v-col>
     </v-row>
   </v-container>
@@ -11,9 +11,7 @@
 <script>
 import * as _ from "lodash";
 import Card from "./Card";
-
-const MINIMUM_CARDS_IN_FULL_ROW = 4;
-const MAX_NUMBER_OF_FULL_ROWS = 3;
+import * as cardUtils from "../assets/CardUtils";
 
 export default {
   name: "CardsBoard",
@@ -23,55 +21,88 @@ export default {
   },
 
   props: {
-    numberOfPairs: {
+    numberOfGroups: {
+      // group can be just a pair or greater
+      type: Number,
+      required: true,
+    },
+
+    groupSize: {
+      // 2 for a pair, can be greater
       type: Number,
       required: true,
     },
   },
 
-  computed: {
-    cardsMatrix() {
-      const numberOfFullRows = Math.min(
-        MAX_NUMBER_OF_FULL_ROWS,
-        Math.floor((this.numberOfPairs * 2) / MINIMUM_CARDS_IN_FULL_ROW)
-      );
+  data: function () {
+    return {
+      cards: [],
+      session: [], // Holds the cards that are clicked within one session
+    };
+  },
 
-      const numberOfColumns = Math.floor(
-        (this.numberOfPairs * 2) / numberOfFullRows
-      );
+  mounted() {
+    this.cards = this.createAndshuffleCards();
+  },
 
-      const cards = [];
-      for (let i = 0; i < this.numberOfPairs; i++) {
-        const cardInfo = {
-          id: i,
-          shouldReveal: true,
-        };
-
-        // Insert 2 cards with the same "id"
-        cards.push(cardInfo);
-        cards.push(cardInfo);
-      }
-
-      const shuffledCards = _.shuffle(cards);
-      const cardsMatrixBuilder = [];
-      let shuffledCardsIndex = 0;
-
-      for (let i = 0; i < numberOfFullRows; i++) {
-        cardsMatrixBuilder.push([]);
-        for (let j = 0; j < numberOfColumns; j++) {
-          cardsMatrixBuilder[i].push(shuffledCards[shuffledCardsIndex]);
-          shuffledCardsIndex++;
+  methods: {
+    createAndshuffleCards() {
+      const shuffledCardsBuilder = [];
+      for (let groupId = 0; groupId < this.numberOfGroups; groupId++) {
+        for (
+          let groupInternalId = 0;
+          groupInternalId < this.groupSize;
+          groupInternalId++
+        ) {
+          shuffledCardsBuilder.push(cardUtils.CardFactory(groupId));
         }
       }
 
-      // add a not-always-full last row:
-      if (shuffledCardsIndex < shuffledCards.length) {
-        const finalRow = cards.slice(shuffledCardsIndex);
-        cardsMatrixBuilder.push(finalRow);
+      const shuffledCards = _.shuffle(shuffledCardsBuilder);
+      for (let i = 0; i < shuffledCards.length; i++) {
+        shuffledCards[i].cardIndex = i;
+      }
+      return shuffledCards;
+    },
+
+    handleCardClicked(cardInfo) {
+      if (cardInfo.isShow) return;
+
+      // First, show the card:
+      this.cards.splice(cardInfo.cardIndex, 1, {
+        ...this.cards[cardInfo.cardIndex],
+        isShow: true,
+      });
+
+      if (_.isEmpty(this.session)) {
+        this.session.push(cardInfo);
+      } else if (this.session.length < this.groupSize) {
+        const lastInSession = _.last(this.session);
+        this.session.push(cardInfo);
+
+        if (cardInfo.groupId !== lastInSession.groupId) {
+          this.clearFailedSession();
+          return;
+        }
       }
 
-      console.log(cardsMatrixBuilder);
-      return cardsMatrixBuilder;
+      if (this.session.length === this.groupSize) {
+        this.session = [];
+      }
+      return;
+    },
+
+    clearFailedSession() {
+      console.log("clearing failed session:", this.session);
+      setTimeout(() => {
+        while (this.session.length) {
+          const cardInfo = this.session.pop();
+          this.cards.splice(cardInfo.cardIndex, 1, {
+            ...this.cards[cardInfo.cardIndex],
+            isShow: false,
+          });
+        }
+      }, 500);
     },
   },
 };

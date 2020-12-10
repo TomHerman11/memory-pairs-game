@@ -5,7 +5,7 @@
         <StartMenu :parentSetStartSettings="setStartSettings" />
       </v-col>
       <v-col :cols="8">
-        <CardsBoard :numberOfPairs="numberOfPairs" />
+        <CardsBoard :numberOfGroups="4" :groupSize="3" />
       </v-col>
     </v-row>
   </v-container>

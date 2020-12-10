@@ -1,14 +1,11 @@
 <template>
-  <v-card>
-    <v-img
-      :aspect-ratio="9 / 16"
-      :width="70"
-      :src="require('../assets/card-background.jpg')"
-    ></v-img>
-
-    <v-card-title v-if="shouldReveal">
-      {{ id }}
-    </v-card-title>
+  <v-card hover :width="70" @click="emitCardClicked">
+    <div v-if="cardInfo.isShow">
+      {{ cardInfo.groupId }}
+    </div>
+    <div v-else>
+      <v-img :src="require('../assets/card-background.jpg')"></v-img>
+    </div>
   </v-card>
 </template>
 
@@ -17,13 +14,15 @@ export default {
   name: "Card",
 
   props: {
-    id: {
-      type: Number,
+    cardInfo: {
+      type: Object,
       required: true,
     },
-    shouldReveal: {
-      type: Boolean,
-      required: true,
+  },
+
+  methods: {
+    emitCardClicked() {
+      this.$emit("cardClicked", this.cardInfo);
     },
   },
 };
