@@ -36,6 +36,9 @@
         />
       </v-col>
     </v-row>
+    <GameCompletedMessage
+      :showCompletedMessage="matchesFound === numberOfGroups"
+    />
   </v-container>
 </template>
 
@@ -43,6 +46,7 @@
 import CardsBoard from "./CardsBoard";
 import SettingsMenu from "./SettingsMenu";
 import Timer from "./Timer";
+import GameCompletedMessage from "./GameCompletedMessage";
 import * as Utils from "../assets/Utils";
 
 const DEFAULT_GROUP_SIZE = 2;
@@ -52,10 +56,10 @@ export default {
   name: "MemoryGame",
 
   components: {
-    // StartMenu,
     CardsBoard,
     SettingsMenu,
     Timer,
+    GameCompletedMessage,
   },
 
   data: function () {

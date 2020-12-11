@@ -50,7 +50,6 @@
 import * as _ from "lodash";
 import * as Utils from "../assets/Utils";
 
-// (A pair is a GROUP of size 2)
 const MIN_NUMBER_OF_GROUPS = 2;
 const MAX_NUMBER_OF_GROUPS = 20;
 
