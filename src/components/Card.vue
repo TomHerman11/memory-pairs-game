@@ -1,10 +1,13 @@
 <template>
   <v-card hover :width="70" :height="90" @click="emitCardClicked">
     <div v-if="cardInfo.isShow">
-      {{ cardInfo.groupId }}
+      <v-img :src="getImageUrl()"></v-img>
     </div>
     <div v-else>
-      <v-img :src="require('../assets/card-background.jpg')"></v-img>
+      <v-img
+        src="../assets/images/card-background.jpg"
+        alt="background"
+      ></v-img>
     </div>
   </v-card>
 </template>
@@ -23,6 +26,11 @@ export default {
   methods: {
     emitCardClicked() {
       this.$emit("cardClicked", this.cardInfo);
+    },
+
+    getImageUrl() {
+      console.log(this.cardInfo.imageFileName);
+      return require(`../assets/images/${this.cardInfo.imageFileName}`);
     },
   },
 };

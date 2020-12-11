@@ -22,13 +22,16 @@ export default {
 
   props: {
     groupSize: {
-      // 2 for a pair, can be greater
       type: Number,
       required: true,
     },
 
     numberOfGroups: {
-      // group can be just a pair or greater
+      type: Number,
+      required: true,
+    },
+
+    watchShouldRestart: {
       type: Number,
       required: true,
     },
@@ -46,11 +49,7 @@ export default {
   },
 
   watch: {
-    groupSize() {
-      this.restartBoard();
-    },
-
-    numberOfGroups() {
+    watchShouldRestart() {
       this.restartBoard();
     },
   },
@@ -58,13 +57,19 @@ export default {
   methods: {
     createAndshuffleCards() {
       const shuffledCardsBuilder = [];
-      for (let groupId = 0; groupId < this.numberOfGroups; groupId++) {
-        for (
-          let groupInternalId = 0;
-          groupInternalId < this.groupSize;
-          groupInternalId++
-        ) {
-          shuffledCardsBuilder.push(Utils.CardFactory(groupId));
+      const shuffledImages = Utils.getShuffledAnimalsFiles();
+
+      if (this.numberOfGroups <= shuffledImages.length) {
+        for (let groupId = 0; groupId < this.numberOfGroups; groupId++) {
+          for (
+            let groupInternalId = 0;
+            groupInternalId < this.groupSize;
+            groupInternalId++
+          ) {
+            shuffledCardsBuilder.push(
+              Utils.CardFactory(groupId, shuffledImages[groupId])
+            );
+          }
         }
       }
 

@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="shouldShowDialog" max-width="400">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn color="primary" dark v-bind="attrs" v-on="on">
+      <v-btn color="primary" v-bind="attrs" v-on="on">
         Game Settings
       </v-btn>
     </template>

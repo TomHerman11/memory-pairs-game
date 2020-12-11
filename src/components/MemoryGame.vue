@@ -1,10 +1,10 @@
 <template>
-  <v-container fluid class="teal darken-2">
+  <v-container fluid class="light-blue lighten-4">
     <v-row no-gutters>
       <v-col :cols="3">
         <v-card color="rgb(255,255,255,0.7)">
           <v-card-title class="justify-center">
-            Matching {{ groupSizeAsString }}
+            Matching: {{ groupSizeAsString }}
           </v-card-title>
           <v-card-title class="justify-center">
             Matches found: {{ matchesFound }} / {{ numberOfGroups }}
@@ -18,7 +18,10 @@
               :watchShouldRestart="gamesPlayed"
             />
           </v-card-title>
-          <v-card-actions class="justify-center">
+          <v-card-actions class="flex-column justify-center">
+            <v-btn @click="restartGame" class="mb-8" color="secondary">
+              Restart
+            </v-btn>
             <SettingsMenu
               :numberOfGroups="numberOfGroups"
               :groupSize="groupSize"
@@ -31,6 +34,7 @@
         <CardsBoard
           :numberOfGroups="numberOfGroups"
           :groupSize="groupSize"
+          :watchShouldRestart="gamesPlayed"
           @moveMade="increaseMovesMade"
           @matchFound="increaseMatchFound"
         />
@@ -92,7 +96,10 @@ export default {
       this.groupSize = newGroupSize;
       this.numberOfGroups = newNumberOfGroups;
 
-      // Reset game stats:
+      this.restartGame();
+    },
+
+    restartGame() {
       this.movesMade = 0;
       this.matchesFound = 0;
       this.gamesPlayed += 1;
