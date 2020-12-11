@@ -59,6 +59,7 @@ export default {
 
   methods: {
     restartTimer() {
+      clearInterval(this.interval);
       this.time = 0;
       this.interval = setInterval(() => (this.time += 1), 1000);
     },

@@ -87,6 +87,10 @@ export default {
     applyNewSettings({ newNumberOfGroups, newGroupSize }) {
       this.groupSize = newGroupSize;
       this.numberOfGroups = newNumberOfGroups;
+
+      // Reset game stats:
+      this.movesMade = 0;
+      this.matchesFound = 0;
       this.gamesPlayed += 1;
     },
   },

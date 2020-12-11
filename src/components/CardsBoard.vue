@@ -21,14 +21,14 @@ export default {
   },
 
   props: {
-    numberOfGroups: {
-      // group can be just a pair or greater
+    groupSize: {
+      // 2 for a pair, can be greater
       type: Number,
       required: true,
     },
 
-    groupSize: {
-      // 2 for a pair, can be greater
+    numberOfGroups: {
+      // group can be just a pair or greater
       type: Number,
       required: true,
     },
@@ -42,7 +42,17 @@ export default {
   },
 
   mounted() {
-    this.cards = this.createAndshuffleCards();
+    this.createAndshuffleCards();
+  },
+
+  watch: {
+    groupSize() {
+      this.restartBoard();
+    },
+
+    numberOfGroups() {
+      this.restartBoard();
+    },
   },
 
   methods: {
@@ -62,7 +72,8 @@ export default {
       for (let i = 0; i < shuffledCards.length; i++) {
         shuffledCards[i].cardIndex = i;
       }
-      return shuffledCards;
+
+      this.cards = shuffledCards;
     },
 
     handleCardClicked(cardInfo) {
@@ -118,6 +129,12 @@ export default {
 
     emitMatchFound() {
       this.$emit("matchFound");
+    },
+
+    restartBoard() {
+      this.cards = [];
+      this.session = [];
+      this.createAndshuffleCards();
     },
   },
 };
