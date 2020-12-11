@@ -4,64 +4,90 @@
       <v-col :cols="3">
         <v-card color="rgb(255,255,255,0.7)">
           <v-card-title class="justify-center">
-            Matching: {{ groupSizeAsString }}
+            Matching {{ groupSizeAsString }}
           </v-card-title>
           <v-card-title class="justify-center">
-            Number of {{ groupSizeAsString }}: {{ numberOfGroups }}
+            Matches found: {{ matchesFound }} / {{ numberOfGroups }}
           </v-card-title>
           <v-card-title class="justify-center">
-            <Timer :tick="true" />
+            Moves: {{ movesMade }}
           </v-card-title>
+          <v-card-title class="justify-center">
+            <Timer
+              :tick="matchesFound < numberOfGroups"
+              :watchShouldRestart="gamesPlayed"
+            />
+          </v-card-title>
+          <v-card-actions class="justify-center">
+            <SettingsMenu
+              :numberOfGroups="numberOfGroups"
+              :groupSize="groupSize"
+              @settingsChanged="applyNewSettings"
+            />
+          </v-card-actions>
         </v-card>
-
-        <!-- <StartMenu :parentSetStartSettings="setStartSettings" /> -->
       </v-col>
       <v-col :cols="9">
-        <CardsBoard :numberOfGroups="numberOfGroups" :groupSize="groupSize" />
+        <CardsBoard
+          :numberOfGroups="numberOfGroups"
+          :groupSize="groupSize"
+          @moveMade="increaseMovesMade"
+          @matchFound="increaseMatchFound"
+        />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-// import StartMenu from "./StartMenu";
 import CardsBoard from "./CardsBoard";
+import SettingsMenu from "./SettingsMenu";
 import Timer from "./Timer";
+import * as Utils from "../assets/Utils";
+
+const DEFAULT_GROUP_SIZE = 2;
+const DEFAULT_NUMBER_OF_GROUPS = 5;
 
 export default {
   name: "MemoryGame",
 
   components: {
     // StartMenu,
-    Timer,
     CardsBoard,
+    SettingsMenu,
+    Timer,
   },
 
   data: function () {
     return {
-      numberOfGroups: 10,
-      groupSize: 2,
       isDialogOpen: false,
+      groupSize: DEFAULT_GROUP_SIZE,
+      numberOfGroups: DEFAULT_NUMBER_OF_GROUPS,
+      movesMade: 0,
+      matchesFound: 0,
+      gamesPlayed: 0,
     };
   },
 
   computed: {
     groupSizeAsString() {
-      const groupSizes = {
-        2: "pairs",
-        3: "triplets",
-        4: "quartets",
-      };
-
-      return groupSizes[this.groupSize]
-        ? groupSizes[this.groupSize]
-        : `${this.groupSize}-of-a-kind`;
+      return Utils.getGroupSizeAsString(this.groupSize);
     },
   },
 
   methods: {
-    setStartSettings(settings) {
-      this.numberOfPairs = settings.numberOfPairs;
+    increaseMovesMade() {
+      this.movesMade += 1;
+    },
+
+    increaseMatchFound() {
+      this.matchesFound += 1;
+    },
+
+    applyNewSettings({ newNumberOfGroups, newGroupSize }) {
+      this.groupSize = newGroupSize;
+      this.numberOfGroups = newNumberOfGroups;
+      this.gamesPlayed += 1;
     },
   },
 };

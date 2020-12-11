@@ -11,7 +11,7 @@
 <script>
 import * as _ from "lodash";
 import Card from "./Card";
-import * as cardUtils from "../assets/CardUtils";
+import * as Utils from "../assets/Utils";
 
 export default {
   name: "CardsBoard",
@@ -54,7 +54,7 @@ export default {
           groupInternalId < this.groupSize;
           groupInternalId++
         ) {
-          shuffledCardsBuilder.push(cardUtils.CardFactory(groupId));
+          shuffledCardsBuilder.push(Utils.CardFactory(groupId));
         }
       }
 
@@ -86,23 +86,38 @@ export default {
         }
       }
 
+      // A match is found!
       if (this.session.length === this.groupSize) {
         this.session = [];
+        this.emitMoveMade();
+        this.emitMatchFound();
       }
       return;
     },
 
     clearFailedSession() {
-      console.log("clearing failed session:", this.session);
+      const cardsToClear = this.session;
+      this.session = [];
+
       setTimeout(() => {
-        while (this.session.length) {
-          const cardInfo = this.session.pop();
+        while (cardsToClear.length) {
+          const cardInfo = cardsToClear.pop();
           this.cards.splice(cardInfo.cardIndex, 1, {
             ...this.cards[cardInfo.cardIndex],
             isShow: false,
           });
         }
-      }, 500);
+
+        this.emitMoveMade();
+      }, 1000);
+    },
+
+    emitMoveMade() {
+      this.$emit("moveMade");
+    },
+
+    emitMatchFound() {
+      this.$emit("matchFound");
     },
   },
 };

@@ -1,5 +1,4 @@
 <template>
-  <!-- <h1 class="display-2 font-weight-bold mb-3">{{ timerAsString }}</h1> -->
   <div>
     {{ timerAsString }}
   </div>
@@ -12,6 +11,11 @@ export default {
   props: {
     tick: {
       type: Boolean,
+      required: true,
+    },
+
+    watchShouldRestart: {
+      type: Number,
       required: true,
     },
   },
@@ -42,13 +46,21 @@ export default {
   },
 
   watch: {
-    tick: function (val) {
-      if (!val) {
+    tick: function (shouldTick) {
+      if (!shouldTick) {
         clearInterval(this.interval);
-      } else {
-        this.time = 0;
-        this.interval = setInterval(() => (this.time += 1), 1000);
       }
+    },
+
+    watchShouldRestart() {
+      this.restartTimer();
+    },
+  },
+
+  methods: {
+    restartTimer() {
+      this.time = 0;
+      this.interval = setInterval(() => (this.time += 1), 1000);
     },
   },
 };
