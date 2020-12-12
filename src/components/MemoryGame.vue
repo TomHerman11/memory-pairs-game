@@ -6,20 +6,24 @@
           <v-card-title class="justify-center">
             Matching: {{ groupSizeAsString }}
           </v-card-title>
+
           <v-card-title class="justify-center">
             Matches found: {{ matchesFound }} / {{ numberOfGroups }}
           </v-card-title>
+
           <v-card-title class="justify-center">
             Moves: {{ movesMade }}
           </v-card-title>
+
           <v-card-title class="justify-center">
             <Timer
               :tick="matchesFound < numberOfGroups"
               :watchShouldRestart="gamesPlayed"
             />
           </v-card-title>
+
           <v-card-actions class="flex-column justify-center">
-            <v-btn @click="restartGame" class="mb-8" color="secondary">
+            <v-btn @click="restartGame" class="mb-2" color="secondary">
               Restart
             </v-btn>
             <SettingsMenu
@@ -29,6 +33,10 @@
             />
           </v-card-actions>
         </v-card>
+        <div class="text--secondary">
+          Images credit:
+          <a href="http://www.freepik.com">Designed by brgfx / Freepik</a>
+        </div>
       </v-col>
       <v-col :cols="9">
         <CardsBoard
@@ -37,11 +45,13 @@
           :watchShouldRestart="gamesPlayed"
           @moveMade="increaseMovesMade"
           @matchFound="increaseMatchFound"
+          @emitFirstImageName="setMainImageName"
         />
       </v-col>
     </v-row>
     <GameCompletedMessage
       :showCompletedMessage="matchesFound === numberOfGroups"
+      :imageName="mainImageName"
     />
   </v-container>
 </template>
@@ -54,7 +64,7 @@ import GameCompletedMessage from "./GameCompletedMessage";
 import * as Utils from "../assets/Utils";
 
 const DEFAULT_GROUP_SIZE = 2;
-const DEFAULT_NUMBER_OF_GROUPS = 5;
+const DEFAULT_NUMBER_OF_GROUPS = 2;
 
 export default {
   name: "MemoryGame",
@@ -74,6 +84,7 @@ export default {
       movesMade: 0,
       matchesFound: 0,
       gamesPlayed: 0,
+      mainImageName: "",
     };
   },
 
@@ -90,6 +101,10 @@ export default {
 
     increaseMatchFound() {
       this.matchesFound += 1;
+    },
+
+    setMainImageName({ imageName }) {
+      this.mainImageName = imageName;
     },
 
     applyNewSettings({ newNumberOfGroups, newGroupSize }) {

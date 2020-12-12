@@ -60,6 +60,12 @@ export default {
       const shuffledImages = Utils.getShuffledAnimalsFiles();
 
       if (this.numberOfGroups <= shuffledImages.length) {
+        // emit the first image to parent component, will present the image:
+        this.emitFirstImageName(
+          shuffledImages.length ? shuffledImages[0] : undefined
+        );
+
+        // make groups of cards with the same groupId:
         for (let groupId = 0; groupId < this.numberOfGroups; groupId++) {
           for (
             let groupInternalId = 0;
@@ -134,6 +140,12 @@ export default {
 
     emitMatchFound() {
       this.$emit("matchFound");
+    },
+
+    emitFirstImageName(imageName) {
+      if (imageName) {
+        this.$emit("emitFirstImageName", { imageName });
+      }
     },
 
     restartBoard() {

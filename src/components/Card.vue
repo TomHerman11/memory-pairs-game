@@ -1,5 +1,5 @@
 <template>
-  <v-card hover :width="70" :height="90" @click="emitCardClicked">
+  <v-card hover width="100" @click="emitCardClicked">
     <div v-if="cardInfo.isShow">
       <v-img :src="getImageUrl()"></v-img>
     </div>
@@ -29,7 +29,6 @@ export default {
     },
 
     getImageUrl() {
-      console.log(this.cardInfo.imageFileName);
       return require(`../assets/images/${this.cardInfo.imageFileName}`);
     },
   },
