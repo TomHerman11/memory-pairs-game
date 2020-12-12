@@ -68,7 +68,6 @@ export default {
     },
 
     imageName(val) {
-      console.log("got imageName in WELL DONE:", val);
       this.imageSrc = require(`../assets/images/${val}`);
     },
   },

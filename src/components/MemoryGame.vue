@@ -49,10 +49,12 @@
         />
       </v-col>
     </v-row>
-    <GameCompletedMessage
-      :showCompletedMessage="matchesFound === numberOfGroups"
-      :imageName="mainImageName"
-    />
+    <v-row>
+      <GameCompletedMessage
+        :showCompletedMessage="matchesFound === numberOfGroups"
+        :imageName="mainImageName"
+      />
+    </v-row>
   </v-container>
 </template>
 
@@ -64,7 +66,7 @@ import GameCompletedMessage from "./GameCompletedMessage";
 import * as Utils from "../assets/Utils";
 
 const DEFAULT_GROUP_SIZE = 2;
-const DEFAULT_NUMBER_OF_GROUPS = 2;
+const DEFAULT_NUMBER_OF_GROUPS = 5;
 
 export default {
   name: "MemoryGame",

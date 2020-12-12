@@ -1,7 +1,7 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col v-for="(card, index) in cards" :key="index">
+  <v-container class="pt-0">
+    <v-row justify="space-around">
+      <v-col v-for="(card, index) in cards" :key="index" cols="auto">
         <Card :cardInfo="card" @cardClicked="handleCardClicked" />
       </v-col>
     </v-row>
