@@ -33,7 +33,7 @@
             />
           </v-card-actions>
         </v-card>
-        <div class="text--secondary">
+        <div class="text--secondary my-2">
           Images credit:
           <a href="http://www.freepik.com">Designed by brgfx / Freepik</a>
         </div>

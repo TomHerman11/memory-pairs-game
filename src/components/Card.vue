@@ -1,30 +1,14 @@
 <template>
-  <v-card
-    hover
-    width="130"
-    height="130"
-    @click="emitCardClicked"
-    class="justify-center"
-  >
-    <div class="pa-0 center-content">
-      <v-spacer></v-spacer>
+  <v-card hover :width="cardSize" :height="cardSize" @click="emitCardClicked">
+    <div class="pa-0">
       <div v-if="cardInfo.isShow">
-        <v-img
-          :src="getImageUrl()"
-          class="rounded"
-          max-width="130px"
-          max-height="130px"
-          width="auto"
-          height="auto"
-        ></v-img>
+        <v-img :src="getImageUrl()" class="rounded"></v-img>
       </div>
       <div v-else>
         <v-img
           src="../assets/images/card-background.jpg"
           alt="background"
           class="rounded"
-          max-width="130px"
-          max-height="130px"
         ></v-img>
       </div>
     </div>
@@ -42,6 +26,12 @@ export default {
     },
   },
 
+  data: function () {
+    return {
+      cardSize: 130,
+    };
+  },
+
   methods: {
     emitCardClicked() {
       this.$emit("cardClicked", this.cardInfo);
@@ -53,11 +43,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.center-content {
-  display: flex;
-  align-items: center;
-  height: 100%;
-}
-</style>
