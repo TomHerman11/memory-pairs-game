@@ -1,5 +1,5 @@
 <template>
-  <v-card hover :width="cardSize" :height="cardSize" @click="emitCardClicked">
+  <v-card hover class="cardSize" @click="emitCardClicked">
     <div class="pa-0">
       <div v-if="cardInfo.isShow">
         <v-img :src="getImageUrl()" class="rounded"></v-img>
@@ -26,12 +26,6 @@ export default {
     },
   },
 
-  data: function () {
-    return {
-      cardSize: 130,
-    };
-  },
-
   methods: {
     emitCardClicked() {
       this.$emit("cardClicked", this.cardInfo);
@@ -43,3 +37,19 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@media screen and (orientation: portrait) {
+  .cardSize {
+    height: 20vw;
+    width: 20vw;
+  }
+}
+
+@media screen and (orientation: landscape) {
+  .cardSize {
+    height: 10vw;
+    width: 10vw;
+  }
+}
+</style>

@@ -13,6 +13,8 @@ import * as _ from "lodash";
 import Card from "./Card";
 import * as Utils from "../assets/Utils";
 
+const TIME_WRONG_GUESS_HIDE_CARDS = 900;
+
 export default {
   name: "CardsBoard",
 
@@ -131,7 +133,7 @@ export default {
         }
 
         this.emitMoveMade();
-      }, 1000);
+      }, TIME_WRONG_GUESS_HIDE_CARDS);
     },
 
     emitMoveMade() {

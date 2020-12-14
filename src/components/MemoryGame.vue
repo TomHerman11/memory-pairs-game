@@ -1,16 +1,16 @@
 <template>
-  <v-container fluid class="light-blue lighten-4">
-    <v-row no-gutters>
-      <v-col :cols="3">
-        <v-card color="rgb(255,255,255,0.7)">
-          <v-card-title class="justify-center">
-            Matching: {{ groupSizeAsString }}
-          </v-card-title>
+  <div class="mainScreen">
+    <div>
+      <v-card color="rgb(255,255,255,0.7)" class="mainMenu">
+        <v-card-title class="justify-center">
+          Matching: {{ groupSizeAsString }}
+        </v-card-title>
 
-          <v-card-title class="justify-center">
-            Matches found: {{ matchesFound }} / {{ numberOfGroups }}
-          </v-card-title>
+        <v-card-title class="justify-center">
+          Matches found: {{ matchesFound }} / {{ numberOfGroups }}
+        </v-card-title>
 
+        <div class="statsContainer">
           <v-card-title class="justify-center">
             Moves: {{ movesMade }}
           </v-card-title>
@@ -21,41 +21,43 @@
               :watchShouldRestart="gamesPlayed"
             />
           </v-card-title>
-
-          <v-card-actions class="flex-column justify-center">
-            <v-btn @click="restartGame" class="mb-2" color="secondary">
-              Restart
-            </v-btn>
-            <SettingsMenu
-              :numberOfGroups="numberOfGroups"
-              :groupSize="groupSize"
-              @settingsChanged="applyNewSettings"
-            />
-          </v-card-actions>
-        </v-card>
-        <div class="text--secondary my-2">
-          Images credit:
-          <a href="http://www.freepik.com">Designed by brgfx / Freepik</a>
         </div>
-      </v-col>
-      <v-col :cols="9">
-        <CardsBoard
-          :numberOfGroups="numberOfGroups"
-          :groupSize="groupSize"
-          :watchShouldRestart="gamesPlayed"
-          @moveMade="increaseMovesMade"
-          @matchFound="increaseMatchFound"
-          @emitFirstImageName="setMainImageName"
-        />
-      </v-col>
-    </v-row>
-    <v-row>
+
+        <v-card-actions class="statsContainer">
+          <v-btn @click="restartGame" class="restartButton" color="secondary">
+            Restart
+          </v-btn>
+          <SettingsMenu
+            :numberOfGroups="numberOfGroups"
+            :groupSize="groupSize"
+            @settingsChanged="applyNewSettings"
+          />
+        </v-card-actions>
+      </v-card>
+      <div class="text--secondary my-2">
+        Images credit:
+        <a href="http://www.freepik.com">Designed by brgfx / Freepik</a>
+      </div>
+    </div>
+
+    <div>
+      <CardsBoard
+        :numberOfGroups="numberOfGroups"
+        :groupSize="groupSize"
+        :watchShouldRestart="gamesPlayed"
+        @moveMade="increaseMovesMade"
+        @matchFound="increaseMatchFound"
+        @emitFirstImageName="setMainImageName"
+      />
+    </div>
+
+    <div>
       <GameCompletedMessage
         :showCompletedMessage="matchesFound === numberOfGroups"
         :imageName="mainImageName"
       />
-    </v-row>
-  </v-container>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -124,3 +126,49 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.mainScreen {
+  display: flex;
+  margin-left: 1vw;
+  margin-right: 1vw;
+  margin-top: 2vh;
+}
+
+.statsContainer {
+  display: flex;
+}
+
+@media screen and (orientation: portrait) {
+  .mainScreen {
+    flex-direction: column;
+  }
+
+  .statsContainer {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .restartButton {
+    margin-right: 10vw;
+  }
+}
+
+@media screen and (orientation: landscape) {
+  .mainScreen {
+    flex-direction: row;
+  }
+
+  .statsContainer {
+    flex-direction: column;
+  }
+
+  .mainMenu {
+    width: 25vw;
+  }
+
+  .restartButton {
+    margin-bottom: 2vh;
+  }
+}
+</style>
