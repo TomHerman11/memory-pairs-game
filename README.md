@@ -1,9 +1,9 @@
 # memory-pairs-game
-The classic favorite **Memory Game** with adorable animals. 🐘🐘🦜🦜 Match pairs, triplets and even quartets!
+The classic **Memory Game** with adorable animals. 🐘🐘🦜🦜 Match pairs, triplets and even quartets!
 
 This project was made as part of my objective to improve my Vue.js skills.
 
-[Vuetify](https://vuetifyjs.com/) is used in this project in order to enhance the UI, and indeed its contributaion is noticeable.
+[Vuetify](https://vuetifyjs.com/) is used in this project in order to enhance the UI and its contributaion is noticeable.
 
 ## Live Application:
 Deployed at: [https://tomherman11.github.io/memory-pairs-game/](https://tomherman11.github.io/memory-pairs-game/)
