@@ -1,7 +1,7 @@
 # memory-pairs-game
 The classic **Memory Game** with adorable animals. 🐘🐘🦜🦜 Match pairs, triplets and even quartets!
 
-This project was made as part of my objective to improve my Vue.js skills.
+This game was made for my 5 & 3 y/o cousins, and they liked it! Also, this project helped me to improve my Vue.js skills. 
 
 [Vuetify](https://vuetifyjs.com/) is used in this project in order to enhance the UI and its contribution is noticeable.
 
